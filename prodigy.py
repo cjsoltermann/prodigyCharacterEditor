@@ -37,9 +37,9 @@ def getLoginData(login):
     data = newDataFile(login)
   return data
 
-def getPlayerData(logindata):
-  r = requests.get(playerUrl + logindata[1], params = { 'fields': 'data', 'auth-key': logindata[0], 'token': logindata[0]})
-  return r.json()[logindata[1]]['data']
+def getPlayerData(logindata, field):
+  r = requests.get(playerUrl + logindata[1], params = { 'fields': field, 'auth-key': logindata[0], 'token': logindata[0]})
+  return r.json()[logindata[1]]
 
 def setProperty(args):
   logindata = getLoginData(args.login)
@@ -50,16 +50,17 @@ def setProperty(args):
   sendData['data'] = player;
   r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
 
-def showProperty(args):
+def getProperty(args):
   logindata = getLoginData(args.login)
-  player = getPlayerData(logindata)
-  if args.property:
-    if not args.property in player:
-      print("There is no property named",args.property)
-      
-    print(player[args.property])
-  else:
-    print(player)
+  player = getPlayerData(logindata, args.property[0])
+  returnValue = player
+  for prop in args.property:
+    if prop in returnValue:
+      returnValue = returnValue[prop]
+    else:
+      print("Property",prop,"does not exist")
+      exit();
+  print(returnValue)
 
 def main():
 
@@ -70,9 +71,9 @@ def main():
   subparsers = parser.add_subparsers(dest='command')
   subparsers.required = True
 
-  parse_show = subparsers.add_parser('show', help='Show property of player')
-  parse_show.add_argument('--property', default='', help='property help')
-  parse_show.set_defaults(func=showProperty)
+  parse_get = subparsers.add_parser('get', help='get property of player')
+  parse_get.add_argument('property', nargs='*', help='property help')
+  parse_get.set_defaults(func=getProperty)
 
   parse_set = subparsers.add_parser('set', help='Set property of player')
   parse_set.add_argument('property', default='', help='property help')
