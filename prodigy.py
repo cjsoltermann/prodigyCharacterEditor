@@ -62,12 +62,14 @@ def getProperty(args):
   player = getPlayerData(logindata, '' if len(args.property) == 0 else args.property[0])
   returnValue = player
   for prop in args.property:
-    if prop in returnValue:
+    if prop.isdigit():
+      returnValue = returnValue[int(prop)]
+    elif prop in returnValue:
       returnValue = returnValue[prop]
     else:
       print("Property",prop,"does not exist")
       exit();
-  if args.noexpand:
+  if args.noexpand and type(returnValue) is dict:
     for key, value in returnValue.items():
       print(key)
   else:
