@@ -52,7 +52,7 @@ def setProperty(args):
 
 def getProperty(args):
   logindata = getLoginData(args.login)
-  player = getPlayerData(logindata, args.property[0])
+  player = getPlayerData(logindata, 'appearance,isMember,equipment,data,state,inventory,tutorial,pets,quests,house,achievements' if len(args.property) == 0 else args.property[0])
   returnValue = player
   for prop in args.property:
     if prop in returnValue:
