@@ -5,6 +5,7 @@ import argparse
 
 playerUrl = "https://api.prodigygame.com/game-api/v2/characters/"
 loginUrl = "https://api.prodigygame.com/game-api/v3/login"
+validFields = ('appearance','isMember','equipment','data','state','inventory','tutorial','pets','quests','house','achievements')
 
 def readDataFile():
   try:
@@ -38,7 +39,13 @@ def getLoginData(login):
   return data
 
 def getPlayerData(logindata, field):
-  r = requests.get(playerUrl + logindata[1], params = { 'fields': field, 'auth-key': logindata[0], 'token': logindata[0]})
+  if field in validFields:
+    r = requests.get(playerUrl + logindata[1], params = { 'fields': field, 'auth-key': logindata[0], 'token': logindata[0]})
+  elif field == '':
+    r = requests.get(playerUrl + logindata[1], params = { 'fields': ','.join(validFields), 'auth-key': logindata[0], 'token': logindata[0]})
+  else:
+    print(field,"is not a valid field")
+    exit()
   return r.json()[logindata[1]]
 
 def setProperty(args):
@@ -52,7 +59,7 @@ def setProperty(args):
 
 def getProperty(args):
   logindata = getLoginData(args.login)
-  player = getPlayerData(logindata, 'appearance,isMember,equipment,data,state,inventory,tutorial,pets,quests,house,achievements' if len(args.property) == 0 else args.property[0])
+  player = getPlayerData(logindata, '' if len(args.property) == 0 else args.property[0])
   returnValue = player
   for prop in args.property:
     if prop in returnValue:
@@ -60,7 +67,11 @@ def getProperty(args):
     else:
       print("Property",prop,"does not exist")
       exit();
-  print(returnValue)
+  if args.noexpand:
+    for key, value in returnValue.items():
+      print(key)
+  else:
+    print(returnValue)
 
 def main():
 
@@ -73,6 +84,7 @@ def main():
 
   parse_get = subparsers.add_parser('get', help='get property of player')
   parse_get.add_argument('property', nargs='*', help='property help')
+  parse_get.add_argument('--noexpand', action='store_true')
   parse_get.set_defaults(func=getProperty)
 
   parse_set = subparsers.add_parser('set', help='Set property of player')
