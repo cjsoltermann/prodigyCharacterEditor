@@ -84,11 +84,21 @@ def getProperty(args):
     else:
       print("Property",prop,"does not exist")
       exit();
-  if args.noexpand and type(returnValue) is dict:
-    for key, value in returnValue.items():
-      print(key)
+  if args.noexpand:
+    if type(returnValue) is dict:
+      for key, value in returnValue.items():
+        print(key)
+    elif type(returnValue) is list:
+      print("List of",len(returnValue))
   else:
-    print(returnValue)
+    if type(returnValue) is dict:
+      for key, value in returnValue.items():
+        print(key,':',value,end='\n\n')
+    elif type(returnValue) is list:
+      for i in range(0, len(returnValue)):
+        print(i,':',returnValue[i])
+    else:
+      print(returnValue)
 
 def main():
 
