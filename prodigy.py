@@ -67,6 +67,9 @@ def setProperty(args):
     else:
         print("Property",prop,"does not exist")
         exit()
+  if setKey is '':
+    print("Cannot set value of dict or list")
+    exit()
   lastObject[setKey] = args.value
   print(lastObject)
 
@@ -115,8 +118,8 @@ def main():
   parse_get.set_defaults(func=getProperty)
 
   parse_set = subparsers.add_parser('set', help='Set property of player')
-  parse_set.add_argument('property', nargs='*', help='property help')
-  parse_set.add_argument('--value', help='value help')
+  parse_set.add_argument('property', nargs='+', help='property help')
+  parse_set.add_argument('--value', '-v', required=True, help='value help')
   parse_set.set_defaults(func=setProperty)
 
   args = parser.parse_args()
