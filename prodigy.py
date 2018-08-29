@@ -101,7 +101,7 @@ def main():
 
   parse_get = subparsers.add_parser('get', help='get property of player')
   parse_get.add_argument('property', nargs='*', help='property help')
-  parse_get.add_argument('--noexpand', '-ne', action='store_true')
+  parse_get.add_argument('--noexpand', '-n', action='store_true')
   parse_get.set_defaults(func=getProperty)
 
   parse_set = subparsers.add_parser('set', help='Set property of player')
