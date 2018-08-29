@@ -50,12 +50,27 @@ def getPlayerData(logindata, field):
 
 def setProperty(args):
   logindata = getLoginData(args.login)
-  player = getPlayerData(logindata)
-  if args.property in player:
-    player[args.property] = args.value
-  sendData = {}
-  sendData['data'] = player;
-  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
+  player = getPlayerData(logindata, args.property[0])
+  setKey = ''
+  lastObject = player
+#{'data':{}}
+#{'isMember':0}
+  for prop in args.property:
+    if prop in lastObject:
+      if type(lastObject[prop]) is dict or type(lastObject[prop]) is list:
+        lastObject = lastObject[prop]
+      else:
+        setKey = prop
+        break
+    elif type(lastObject) is list and prop.isdigit() and len(lastObject) >= int(prop):
+      lastObject = lastObject[int(prop)]
+    else:
+        print("Property",prop,"does not exist")
+        exit()
+  lastObject[setKey] = args.value
+  print(lastObject)
+
+#  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
 
 def getProperty(args):
   logindata = getLoginData(args.login)
@@ -90,8 +105,8 @@ def main():
   parse_get.set_defaults(func=getProperty)
 
   parse_set = subparsers.add_parser('set', help='Set property of player')
-  parse_set.add_argument('property', default='', help='property help')
-  parse_set.add_argument('value', default='', help='value help')
+  parse_set.add_argument('property', nargs='*', help='property help')
+  parse_set.add_argument('--value', help='value help')
   parse_set.set_defaults(func=setProperty)
 
   args = parser.parse_args()
