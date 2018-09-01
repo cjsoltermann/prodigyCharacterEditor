@@ -51,6 +51,7 @@ def getPlayerData(logindata, field):
 def setProperty(args):
   logindata = getLoginData(args.login)
   player = getPlayerData(logindata, args.property[0])
+  value = int(args.value) if args.value.isdigit() else args.value
   setKey = ''
   lastObject = player
 #{'data':{}}
@@ -70,7 +71,7 @@ def setProperty(args):
   if setKey is '':
     print("Cannot set value of dict or list")
     exit()
-  lastObject[setKey] = args.value
+  lastObject[setKey] = value
   print(lastObject)
 
 #  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
