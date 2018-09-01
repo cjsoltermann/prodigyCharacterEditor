@@ -72,7 +72,9 @@ def setProperty(args):
     print("Cannot set value of dict or list")
     exit()
   lastObject[setKey] = value
-  print(lastObject)
+  returnObject = {}
+  returnObject[args.property[0]] = lastObject
+  print(returnObject)
 
 #  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
 
