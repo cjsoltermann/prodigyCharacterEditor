@@ -91,6 +91,10 @@ def getProperty(args):
       print("Property",prop,"does not exist")
       exit();
   if args.noexpand:
+    if len(args.property) == 0:
+      for field in validFields:
+        print(field)
+      exit()
     if type(returnValue) is dict:
       for key, value in returnValue.items():
         print(key)
