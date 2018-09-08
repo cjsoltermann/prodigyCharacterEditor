@@ -82,7 +82,7 @@ def getProperty(args):
   player = getPlayerData(logindata, '' if len(args.property) == 0 else args.property[0])
   returnValue = player
   for prop in args.property:
-    if prop.isdigit():
+    if prop.isdigit() and 0 < int(prop) < len(returnValue):
       returnValue = returnValue[int(prop)]
     elif prop in returnValue:
       returnValue = returnValue[prop]
