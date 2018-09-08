@@ -20,7 +20,7 @@ def newDataFile(login):
     print("No previous user found: Specify user with --login")
     exit()
   keyfile = open("keyfile", "w")
-  r = requests.post(loginUrl, data = {'username': login[0], 'password': login[1], 'clientVersion': '2-2-1'})
+  r = requests.post(loginUrl, data = {'username': login[0], 'password': login[1], 'clientVersion': '2-4-2'})
   data = "\n".join([r.json()['authToken'], str(r.json()['userID']), login[0], login[1]])
   keyfile.write(data)
   keyfile.close()
