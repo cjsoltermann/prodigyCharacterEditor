@@ -52,29 +52,28 @@ def setProperty(args):
   logindata = getLoginData(args.login)
   player = getPlayerData(logindata, args.property[0])
   value = int(args.value) if args.value.isdigit() else args.value
-  setKey = ''
+  returnObject = player
   lastObject = player
-#{'data':{}}
-#{'isMember':0}
+  setKey = ''
+
   for prop in args.property:
     if prop in lastObject:
-      if type(lastObject[prop]) is dict or type(lastObject[prop]) is list:
+      if type(lastObject[prop]) is list or type(lastObject[prop]) is dict:
         lastObject = lastObject[prop]
       else:
-        setKey = prop
-        break
-    elif type(lastObject) is list and prop.isdigit() and len(lastObject) >= int(prop):
-      lastObject = lastObject[int(prop)]
+        setkey = prop
+    elif type(lastObject) is list and prop.isdigit() and 0 < int(prop) < len(lastObject):
+      if type(lastObject[int(prop)]) is list or type(lastObject[int(prop)]) is dict:
+        lastObject = lastObject[int(prop)]
+      else:
+        setkey = int(prop)
     else:
-        print("Property",prop,"does not exist")
-        exit()
-  if setKey is '':
-    print("Cannot set value of dict or list")
-    exit()
-  lastObject[setKey] = value
-  returnObject = {}
-  returnObject[args.property[0]] = lastObject
-  print(returnObject)
+      print(prop,"is not a valid property")
+      exit()
+
+  lastObject[setkey] = value
+  print(json.dumps(returnObject, indent=4))
+    
 
 #  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
 
@@ -101,14 +100,7 @@ def getProperty(args):
     elif type(returnValue) is list:
       print("List of",len(returnValue))
   else:
-    if type(returnValue) is dict:
-      for key, value in returnValue.items():
-        print(key,':',value,end='\n\n')
-    elif type(returnValue) is list:
-      for i in range(0, len(returnValue)):
-        print(i,':',returnValue[i])
-    else:
-      print(returnValue)
+    print(json.dumps(returnValue, indent=4))
 
 def main():
 
