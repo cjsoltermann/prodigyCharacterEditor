@@ -34,7 +34,7 @@ def keyExpired(loginData):
 
 def getLoginData(login):
   data = readDataFile()
-  if len(data) < 4 or keyExpired(data):
+  if len(data) < 4 or keyExpired(data) or login:
     data = newDataFile(login)
   return data
 
