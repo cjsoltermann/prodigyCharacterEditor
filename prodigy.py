@@ -75,7 +75,7 @@ def setProperty(args):
   print(json.dumps(returnObject, indent=4))
     
 
-#  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(sendData), 'auth-key': logindata[0], 'token': logindata[0]})
+  r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(returnObject), 'auth-key': logindata[0], 'token': logindata[0]})
 
 def getProperty(args):
   logindata = getLoginData(args.login)
