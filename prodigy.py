@@ -28,9 +28,9 @@ def newDataFile(login):
 
 def keyExpired(loginData):
   r = requests.post(playerUrl + loginData[1], data = {'data': "{}", 'auth-key': loginData[0], 'token': loginData[0]})
-  if(r.text == '{"code":"BadRequestError","message":"Bad request"}'):
-    return True
-  return False
+  if(r.text == '{"message":"Nothing to update"}'):
+    return False
+  return True
 
 def getLoginData(login):
   data = readDataFile()
