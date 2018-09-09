@@ -24,7 +24,7 @@ def newDataFile(login):
   data = "\n".join([r.json()['authToken'], str(r.json()['userID']), login[0], login[1]])
   keyfile.write(data)
   keyfile.close()
-  return data
+  return data.split('\n')
 
 def keyExpired(loginData):
   r = requests.post(playerUrl + loginData[1], data = {'data': "{}", 'auth-key': loginData[0], 'token': loginData[0]})
@@ -88,6 +88,8 @@ def setProperty(args):
 
 def getProperty(args):
   logindata = getLoginData(args.login)
+  if(args.player):
+    logindata[1] = args.player
   player = getPlayerData(logindata, '' if len(args.property) == 0 else args.property[0])
   returnValue = player
   for prop in args.property:
@@ -123,6 +125,7 @@ def main():
   parse_get = subparsers.add_parser('get', help='get property of player')
   parse_get.add_argument('property', nargs='*', help='property help')
   parse_get.add_argument('--noexpand', '-n', action='store_true')
+  parse_get.add_argument('--player', '-p')
   parse_get.set_defaults(func=getProperty)
 
   parse_set = subparsers.add_parser('set', help='Set property of player')
