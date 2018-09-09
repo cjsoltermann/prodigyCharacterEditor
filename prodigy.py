@@ -51,7 +51,15 @@ def getPlayerData(logindata, field):
 def setProperty(args):
   logindata = getLoginData(args.login)
   player = getPlayerData(logindata, args.property[0])
-  value = int(args.value) if args.value.isdigit() else args.value
+  value = {}
+  if args.value.isdigit():
+    value = int(args.value)
+  elif args.value == 'true':
+    value = True
+  elif args.value == 'false':
+    value = False
+  else:
+    value = args.value
   returnObject = player
   lastObject = player
   setKey = ''
@@ -76,6 +84,7 @@ def setProperty(args):
     
 
   r = requests.post(playerUrl + logindata[1], data = { 'data': json.dumps(returnObject), 'auth-key': logindata[0], 'token': logindata[0]})
+  print(r.text)
 
 def getProperty(args):
   logindata = getLoginData(args.login)
