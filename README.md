@@ -16,15 +16,6 @@ Tool to modify character data in Prodigy
 ```
 ./prodigy.py --login [username] [password] get -n
 ```
-
-Note: Your username and password will be saved, so they only need to be entered once
-
-#### Show specific property
-
-```
-./prodigy.py get appearance gender
-```
-Result:
 ```
 appearance
 isMember
@@ -37,6 +28,17 @@ pets
 quests
 house
 achievements
+```
+Note: Your username and password will be saved, so they only need to be entered once
+
+#### Show specific property
+
+```
+./prodigy.py get appearance gender
+```
+Result:
+```
+"male"
 ```
 
 #### Set specific property
