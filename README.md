@@ -16,6 +16,7 @@ Tool to modify character data in Prodigy
 ```
 ./prodigy.py --login [username] [password] get -n
 ```
+Result:
 ```
 appearance
 isMember
